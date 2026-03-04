@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Clara — v1 vs v2 Diff Viewer</title>
+<style>
+  body { font-family: monospace; background: #1a1a2e; color: #eee; padding: 20px; }
+  h1 { color: #00b4d8; }
+  .container { display: flex; gap: 20px; }
+  .panel { flex: 1; background: #16213e; padding: 15px; border-radius: 8px; }
+  .panel h2 { color: #90e0ef; margin-top: 0; }
+  pre { white-space: pre-wrap; font-size: 13px; }
+  .changes { margin-top: 20px; background: #0f3460; padding: 15px; border-radius: 8px; }
+  .added { color: #90ee90; }
+  .removed { color: #ff6b6b; }
+  .updated { color: #ffd166; }
+  input[type=file] { margin: 8px 4px; padding: 6px; background: #333; color: #eee; border: 1px solid #555; border-radius: 4px; }
+  button { padding: 8px 16px; background: #00b4d8; border: none; color: white; border-radius: 4px; cursor: pointer; }
+</style>
+</head>
+<body>
+<h1>🤖 Clara — Agent Version Diff Viewer</h1>
+
+<div>
+  <label>Load v1 account_memo.json: <input type="file" id="v1file" accept=".json"></label>
+  <label>Load v2 account_memo.json: <input type="file" id="v2file" accept=".json"></label>
+  <button onclick="compare()">Compare Versions</button>
+</div>
+
+<div class="container" id="panels" style="display:none">
+  <div class="panel"><h2>v1 (Demo)</h2><pre id="v1content"></pre></div>
+  <div class="panel"><h2>v2 (Onboarding)</h2><pre id="v2content"></pre></div>
+</div>
+<div class="changes" id="changelist" style="display:none">
+  <h2>📋 Changes</h2>
+  <div id="changehtml"></div>
+</div>
+
+<script>
+let v1data = null, v2data = null;
+
+function readJSON(file, cb) {
+  const r = new FileReader();
+  r.onload = e => cb(JSON.parse(e.target.result));
+  r.readAsText(file);
+}
+
+document.getElementById("v1file").onchange = e => readJSON(e.target.files[0], d => { v1data = d; });
+document.getElementById("v2file").onchange = e => readJSON(e.target.files[0], d => { v2data = d; });
+
+function flattenObj(obj, prefix = "") {
+  return Object.keys(obj).reduce((acc, k) => {
+    const key = prefix ? `${prefix}.${k}` : k;
+    const val = obj[k];
+    if (val && typeof val === "object" && !Array.isArray(val)) {
+      Object.assign(acc, flattenObj(val, key));
+    } else {
+      acc[key] = JSON.stringify(val);
+    }
+    return acc;
+  }, {});
+}
+
+function compare() {
+  if (!v1data || !v2data) { alert("Load both files first!"); return; }
+  document.getElementById("v1content").textContent = JSON.stringify(v1data, null, 2);
+  document.getElementById("v2content").textContent = JSON.stringify(v2data, null, 2);
+  document.getElementById("panels").style.display = "flex";
+
+  const f1 = flattenObj(v1data), f2 = flattenObj(v2data);
+  const allKeys = new Set([...Object.keys(f1), ...Object.keys(f2)]);
+  let html = "";
+
+  allKeys.forEach(k => {
+    if (k === "version" || k === "generated_at" || k === "source") return;
+    if (!(k in f1)) {
+      html += `<p class="added">➕ <b>${k}</b>: ${f2[k]}</p>`;
+    } else if (!(k in f2)) {
+      html += `<p class="removed">➖ <b>${k}</b>: ${f1[k]}</p>`;
+    } else if (f1[k] !== f2[k]) {
+      html += `<p class="updated">✏️ <b>${k}</b><br>
+        &nbsp;&nbsp;Before: <span style="color:#aaa">${f1[k]}</span><br>
+        &nbsp;&nbsp;After: <span style="color:#fff">${f2[k]}</span></p>`;
+    }
+  });
+
+  if (!html) html = "<p>No differences found.</p>";
+  document.getElementById("changehtml").innerHTML = html;
+  document.getElementById("changelist").style.display = "block";
+}
+</script>
+</body>
+</html>
