@@ -1,0 +1,168 @@
+{
+  "name": "Clara Pipeline",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -752,
+        80
+      ],
+      "id": "7242699e-d811-45e5-8df4-866551f27eb1",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "484e6f93-cb0a-4823-a224-27f781139de1",
+              "leftValue": "=Value 1: {{ $json.call_type }}",
+              "rightValue": "Value 2: demo",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -320,
+        96
+      ],
+      "id": "55810c09-f880-4f34-89c2-b795748c1102",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "url": "http://localhost/demo-pipeline-placeholder",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -112,
+        -32
+      ],
+      "id": "76c21b6b-7f73-4034-94a7-959f13aaf2d2",
+      "name": "Run Demo Pipeline"
+    },
+    {
+      "parameters": {
+        "url": "http://localhost/onboarding-pipeline-placeholder",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -112,
+        240
+      ],
+      "id": "92b2c6c2-5656-4d4e-8282-406ba5cc3727",
+      "name": "Run Onboarding Pipeline"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c83bf46a-0300-4733-b843-5152b8196524",
+              "name": "file_path",
+              "value": "data/demo/001_bens_electric_demo.txt",
+              "type": "string"
+            },
+            {
+              "id": "6cd64539-6085-41db-97af-fb0b38526985",
+              "name": "call_type",
+              "value": "demo",
+              "type": "string"
+            },
+            {
+              "id": "5060a573-eb8b-4615-a016-e53ef67a644a",
+              "name": "account_id",
+              "value": "bens_electric_solutions_team_20260304",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -544,
+        112
+      ],
+      "id": "c0f4b1f4-a2eb-453e-92b5-12edbb0a7073",
+      "name": "fields"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Run Demo Pipeline",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Run Onboarding Pipeline",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "fields": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "8cf06aff-c17d-4000-894c-d782accbbed9",
+  "meta": {
+    "instanceId": "6f0294f53393a90e854026fe7bf7b143435eedf8e369e8f323b245be09bfb409"
+  },
+  "id": "gbH6QShmhG6FRp2U",
+  "tags": []
+}
