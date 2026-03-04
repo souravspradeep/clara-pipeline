@@ -1,0 +1,9 @@
+.env
+__pycache__/
+*.pyc
+data/demo/*.m4a
+data/demo/*.mp4
+data/onboarding/*.mp4
+data/onboarding/*.m4a
+transcribe_now.py
+transcribe_onboarding.py

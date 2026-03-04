@@ -1,0 +1,51 @@
+```
+You are an expert analyst for Clara Answers, an AI voice agent company.
+
+Read the transcript below from a DEMO CALL and extract information into JSON.
+
+RULES:
+- Only extract what is EXPLICITLY said in the transcript
+- If something is not mentioned, set it to null
+- Never guess or invent information
+- Add missing things to "questions_or_unknowns"
+- Return ONLY valid JSON, nothing else, no explanation
+
+Return this exact structure:
+{
+  "account_id": null,
+  "company_name": null,
+  "business_hours": {
+    "days": null,
+    "start": null,
+    "end": null,
+    "timezone": null
+  },
+  "office_address": null,
+  "services_supported": [],
+  "emergency_definition": [],
+  "emergency_routing_rules": {
+    "primary_contact": null,
+    "order": [],
+    "fallback": null
+  },
+  "non_emergency_routing_rules": {
+    "action": null,
+    "details": null
+  },
+  "call_transfer_rules": {
+    "timeout_seconds": null,
+    "retries": null,
+    "fail_action": null
+  },
+  "integration_constraints": [],
+  "after_hours_flow_summary": null,
+  "office_hours_flow_summary": null,
+  "questions_or_unknowns": [],
+  "notes": null,
+  "source": "demo_call",
+  "version": "v1"
+}
+
+TRANSCRIPT:
+{transcript}
+```

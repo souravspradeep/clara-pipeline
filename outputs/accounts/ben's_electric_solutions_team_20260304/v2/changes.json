@@ -1,0 +1,39 @@
+{
+  "account_id": "ben's_electric_solutions_team_20260304",
+  "generated_at": "2026-03-04T10:43:55.115430Z",
+  "total_changes": 7,
+  "changes": [
+    {
+      "field": "root['source']",
+      "type": "updated",
+      "old": "demo_call",
+      "new": "onboarding_call"
+    },
+    {
+      "field": "root['version']",
+      "type": "updated",
+      "old": "v1",
+      "new": "v2"
+    },
+    {
+      "field": "root['service_call_fee']",
+      "type": "added"
+    },
+    {
+      "field": "root['hourly_charges']",
+      "type": "added"
+    },
+    {
+      "field": "root['call_out_fee_includes']",
+      "type": "added"
+    },
+    {
+      "field": "root['emergency_properties']",
+      "type": "added"
+    },
+    {
+      "field": "root['notification_preferences']",
+      "type": "added"
+    }
+  ]
+}
